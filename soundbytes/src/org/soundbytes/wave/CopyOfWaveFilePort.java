@@ -1,6 +1,8 @@
 package org.soundbytes.wave;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import org.soundbytes.channel.Channel;
 import org.soundbytes.channel.impl.RepeatChannel;
 import org.soundbytes.mixer.impl.MixerImpl;
 
-public class WaveFilePort
+public class CopyOfWaveFilePort
 {
 
   public static void main(String[] args)
@@ -21,27 +23,28 @@ public class WaveFilePort
     channels.add(new RepeatChannel(wfcLeft.getChannel(0), 9, 100000));
     channels.add(new RepeatChannel(wfcRight.getChannel(0), 9, 95000));
     channels.add(new RepeatChannel(wfcCenter.getChannel(0), 9, 90000));
-    WaveFilePort asp = new WaveFilePort("wav/result.wav", new WaveFormat(WaveFormat.Format.PCM, channels
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    CopyOfWaveFilePort asp = new CopyOfWaveFilePort(baos, new WaveFormat(WaveFormat.Format.PCM, channels
         .size(), 16, 48000), channels);
     asp.run();
-    System.out.println("done");
+    System.out.println("done " + baos.size());
   }
 
   // private EnumMap<Speaker, Channel> channels;
   private Channel[] channels;
-  private String waveFile;
+  private OutputStream out;
   private WaveFormat waveFormat;
 
-  public WaveFilePort(String waveFile, WaveFormat waveFormat, List<Channel> channels)
+  public CopyOfWaveFilePort(OutputStream out, WaveFormat waveFormat, List<Channel> channels)
   {
-    this(waveFile, waveFormat, channels.toArray(new Channel[channels.size()]));
+    this(out, waveFormat, channels.toArray(new Channel[channels.size()]));
   }
 
-  public WaveFilePort(String waveFile, WaveFormat waveFormat, Channel... channels)
+  public CopyOfWaveFilePort(OutputStream out, WaveFormat waveFormat, Channel... channels)
   {
     super();
     this.channels = channels;
-    this.waveFile = waveFile;
+    this.out = out;
     this.waveFormat = waveFormat;
   }
 
@@ -55,7 +58,7 @@ public class WaveFilePort
     }
     try
     {
-      WaveOutputStream wos = new WaveOutputStream(new FileOutputStream(waveFile), waveFormat);
+      WaveOutputStream wos = new WaveOutputStream(out, waveFormat);
       byte[] data;
       while ((data = mixer.mix()) != null)
       {

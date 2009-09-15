@@ -17,6 +17,7 @@ public class Test1
 
   public static void main(String[] args)
   {
+    test1();
   }
 
   public static void test1()
@@ -29,8 +30,8 @@ public class Test1
     channels.add(new RepeatChannel(wfcLeft.getChannel(0), 9, 100000));
     channels.add(new RepeatChannel(wfcRight.getChannel(0), 9, 95000));
     channels.add(new RepeatChannel(wfcCenter.getChannel(0), 9, 90000));
-    WaveFilePort asp = new WaveFilePort("wav/result.wav", channels, new WaveFormat(WaveFormat.Format.PCM, channels
-        .size(), 16, 48000));
+    WaveFilePort asp = new WaveFilePort("wav/result.wav", new WaveFormat(WaveFormat.Format.PCM, channels
+        .size(), 16, 48000), channels);
     asp.run();
     System.out.println("done");
   }

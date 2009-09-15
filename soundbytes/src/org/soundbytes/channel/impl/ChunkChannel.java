@@ -12,10 +12,27 @@ public class ChunkChannel implements Channel
 
   private List<Chunk> chunks;
 
+  public ChunkChannel(List<Chunk> chunks)
+  {
+    super();
+    this.chunks = chunks;
+  }
+  
   public ChunkChannel(Chunk... chunks)
   {
     super();
     this.chunks = new LinkedList<Chunk>(Arrays.asList(chunks));
+  }
+
+  public ChunkChannel(Channel channel)
+  {
+    super();
+    chunks = new LinkedList<Chunk>();
+    Chunk chunk;
+    while ((chunk = channel.nextChunk()) != null)
+    {
+      chunks.add(chunk);
+    }
   }
 
   public synchronized void addChunk(Chunk chunk)
