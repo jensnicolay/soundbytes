@@ -7,9 +7,9 @@ public class TimeshiftChannel implements Channel
 {
 
   private Channel source;
-  private int timeshift;
+  private long timeshift;
 
-  public TimeshiftChannel(Channel source, int timeshift)
+  public TimeshiftChannel(Channel source, long timeshift)
   {
     super();
     this.source = source;

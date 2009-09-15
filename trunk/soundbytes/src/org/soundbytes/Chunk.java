@@ -17,7 +17,7 @@ public class Chunk
 
   public Chunk(long position, int[] data)
   {
-    this(0, data, 0, data.length);
+    this(position, data, 0, data.length);
   }
 
   public Chunk(long position, int[] data, int from, int length)
